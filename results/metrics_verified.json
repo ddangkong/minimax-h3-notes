@@ -1,0 +1,98 @@
+{
+ "stride": 5,
+ "metrics": {
+  "sharpness": "mean over sampled frames of var(Laplacian(grey, CV_64F))",
+  "saturation": "mean over sampled frames of mean(HSV S channel, 0-255)"
+ },
+ "lora_ab": [
+  {
+   "label": "A  existing 8-step, shift 12",
+   "sharpness": 133.63,
+   "saturation": 61.34,
+   "frames_sampled": 25,
+   "width": 1344,
+   "height": 768
+  },
+  {
+   "label": "B  v4 LoRA 6-step, shift 12",
+   "sharpness": 81.72,
+   "saturation": 70.57,
+   "frames_sampled": 25,
+   "width": 1344,
+   "height": 768
+  },
+  {
+   "label": "C  v4 LoRA 6-step, shift 8",
+   "sharpness": 71.55,
+   "saturation": 68.44,
+   "frames_sampled": 25,
+   "width": 1344,
+   "height": 768
+  }
+ ],
+ "res_ab": [
+  {
+   "label": "native 1344x768",
+   "sharpness": 133.63,
+   "saturation": 61.34,
+   "frames_sampled": 25,
+   "width": 1344,
+   "height": 768
+  },
+  {
+   "label": "1920x1088",
+   "sharpness": 45.49,
+   "saturation": 76.62,
+   "frames_sampled": 25,
+   "width": 1920,
+   "height": 1088
+  }
+ ],
+ "chain": [
+  {
+   "label": "seg1",
+   "sharpness": 176.27,
+   "saturation": 42.71,
+   "frames_sampled": 25,
+   "width": 1344,
+   "height": 768,
+   "seg": 1
+  },
+  {
+   "label": "seg2",
+   "sharpness": 210.59,
+   "saturation": 59.7,
+   "frames_sampled": 25,
+   "width": 1344,
+   "height": 768,
+   "seg": 2
+  },
+  {
+   "label": "seg3",
+   "sharpness": 165.19,
+   "saturation": 71.17,
+   "frames_sampled": 25,
+   "width": 1344,
+   "height": 768,
+   "seg": 3
+  },
+  {
+   "label": "seg6",
+   "sharpness": 306.27,
+   "saturation": 72.84,
+   "frames_sampled": 25,
+   "width": 1344,
+   "height": 768,
+   "seg": 6
+  },
+  {
+   "label": "seg12",
+   "sharpness": 459.62,
+   "saturation": 73.68,
+   "frames_sampled": 25,
+   "width": 1344,
+   "height": 768,
+   "seg": 12
+  }
+ ]
+}
