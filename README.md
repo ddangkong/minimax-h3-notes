@@ -20,6 +20,7 @@ RTX 5080 16GB · 31GB system RAM · ComfyUI 0.33.1 · torch 2.12.0+cu130 · Wind
 | [The silent `ref_images` failure](#the-silent-ref_images-failure) | A wrong input shape is ignored with no error, and the output still looks fine |
 | [Character consistency across cuts](#character-consistency-across-cuts) | Three-view chroma-key sheets, scene-only prompts |
 | [What the card actually does](#what-the-card-actually-does) | Frame ceiling, VRAM, resolution, timings |
+| [The v4 LoRA that did not replicate](#the-v4-lora-a-single-seed-result-that-did-not-replicate) | A single-seed result reversed at n=2 |
 | [Metric definitions](#metric-definitions) | What "sharpness" and "saturation" mean here, and two ways to measure them wrong |
 | [Scripts](#scripts) | |
 | [Limitations](#limitations) | Read this before trusting any number above |
@@ -215,6 +216,62 @@ the art style at once. Let your harness choose which earlier frame to inherit fr
 
 ---
 
+## The v4 LoRA: a single-seed result that did not replicate
+
+Worth reading as a cautionary tale about n=1, because it is one.
+
+The [v4 turbo LoRA](https://github.com/Larryvrh/ComfyUI-MiniMax-H3-Turbo) is recommended by its
+author as "the strongest checkpoint so far … markedly better micro-detail (faces, fingers,
+texture)," with one stated exception:
+
+> "The one trade-off shows up **only at 4 steps with large, fast motion**, where v4 can produce
+> motion-smear / trailing ghosting … **Using 6–8 steps largely removes it**."
+
+A single fast-fight generation at 6 steps appeared to contradict that — v4's hands came out as
+pale featureless blobs while the older 8-step LoRA rendered knuckles. Re-run as a grid of two
+content types × three configurations × two seeds, the finding evaporated:
+
+![two seeds across three configurations on fast motion](images/h3-lora-n2.jpg)
+
+| Content | Configuration | Hands | Time |
+|---|---|---|---|
+| Fast motion | old 8-step @ 8 | clean in both seeds | 245s |
+| Fast motion | v4 @ 6 | **blobbed in 1 of 2 seeds** | 184s |
+| Fast motion | v4 @ 8 | clean in both seeds | 237s |
+| Slow / static | old 8-step @ 8 | clean in both seeds | 245s |
+| Slow / static | v4 @ 6 | clean in both seeds | 184s |
+
+![slow content, all four cells clean](images/h3-lora-slow.jpg)
+
+**The author's guidance holds; the counter-example was seed luck.** The failure is real but
+occasional, disappears at 8 steps, and never appeared on slow content. v4 at 8 steps was clean in
+every cell and *faster* than the older 8-step LoRA (237s vs 245s). Use v4 at 8 steps.
+
+### Why the sharpness metric was useless here
+
+| Cell | seed 42 | seed 1234 | mean |
+|---|---|---|---|
+| old 8-step, fast | 133.6 | 77.1 | 105.4 |
+| v4 @ 6, fast | 81.7 | 83.7 | 82.7 |
+| v4 @ 8, fast | 85.1 | 68.5 | 76.8 |
+
+The old-8-step cell ranges from 77.1 to 133.6 across two seeds — a spread wider than the gap
+between any two configurations. The original comparison happened to draw the 133.6 seed for the
+old LoRA and an 81.7 seed for v4, which is the entire "result"; at the other seed the ordering
+reverses.
+
+**When seed-to-seed variance exceeds the effect you are measuring, a single-seed comparison is
+not evidence** — and the metric will still hand you a confident number. The cause is visible in
+the image above: different seeds produced completely different framing, so sharpness is measuring
+composition as much as quality.
+
+Raw data: [`results/results_loran.json`](results/results_loran.json) (timings, VRAM) and
+[`results/results_loran_metrics.json`](results/results_loran_metrics.json) (per-clip metrics).
+Reproduce with [`scripts/lora_n.py`](scripts/lora_n.py) then
+[`scripts/measure_loran.py`](scripts/measure_loran.py).
+
+---
+
 ## Metric definitions
 
 Any writeup quoting a sharpness number owes you its definition, because the word covers several
@@ -278,8 +335,8 @@ did not transfer:
 
 - **One GPU, one model, largely one content type** (anime-style action). A different card or a
   different subject will give a different table.
-- **Most cells are n=1 on a single seed.** The LoRA comparison is being re-run across two
-  content types and two seeds; results will land in `results/`.
+- **Most cells are n=1 on a single seed.** The one comparison that was re-run at n=2 reversed,
+  which is not reassuring about the rest. Treat any single-seed number here as provisional.
 - **Sharpness is a blunt instrument.** It does not capture "the hands became featureless
   blobs", which was the deciding factor in one comparison. Look at the frames.
 - Scripts assume Windows paths and a local ComfyUI at `127.0.0.1:8188`.

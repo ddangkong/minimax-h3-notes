@@ -1,0 +1,85 @@
+{
+ "stride": 5,
+ "rows": [
+  {
+   "tag": "A_old8_fast_s1234",
+   "cell": "A_old8_fast",
+   "seed": 1234,
+   "sharpness": 77.1,
+   "saturation": 76.64,
+   "frames": 25
+  },
+  {
+   "tag": "A_old8_fast_s42",
+   "cell": "A_old8_fast",
+   "seed": 42,
+   "sharpness": 133.63,
+   "saturation": 61.34,
+   "frames": 25
+  },
+  {
+   "tag": "B_v4_6_fast_s1234",
+   "cell": "B_v4_6_fast",
+   "seed": 1234,
+   "sharpness": 83.7,
+   "saturation": 85.39,
+   "frames": 25
+  },
+  {
+   "tag": "B_v4_6_fast_s42",
+   "cell": "B_v4_6_fast",
+   "seed": 42,
+   "sharpness": 81.72,
+   "saturation": 70.57,
+   "frames": 25
+  },
+  {
+   "tag": "C_v4_8_fast_s1234",
+   "cell": "C_v4_8_fast",
+   "seed": 1234,
+   "sharpness": 68.48,
+   "saturation": 86.77,
+   "frames": 25
+  },
+  {
+   "tag": "C_v4_8_fast_s42",
+   "cell": "C_v4_8_fast",
+   "seed": 42,
+   "sharpness": 85.14,
+   "saturation": 60.76,
+   "frames": 25
+  },
+  {
+   "tag": "D_old8_slow_s1234",
+   "cell": "D_old8_slow",
+   "seed": 1234,
+   "sharpness": 263.46,
+   "saturation": 85.01,
+   "frames": 25
+  },
+  {
+   "tag": "D_old8_slow_s42",
+   "cell": "D_old8_slow",
+   "seed": 42,
+   "sharpness": 149.34,
+   "saturation": 89.03,
+   "frames": 25
+  },
+  {
+   "tag": "E_v4_6_slow_s1234",
+   "cell": "E_v4_6_slow",
+   "seed": 1234,
+   "sharpness": 249.55,
+   "saturation": 92.76,
+   "frames": 25
+  },
+  {
+   "tag": "E_v4_6_slow_s42",
+   "cell": "E_v4_6_slow",
+   "seed": 42,
+   "sharpness": 87.18,
+   "saturation": 66.79,
+   "frames": 25
+  }
+ ]
+}

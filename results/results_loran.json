@@ -1,0 +1,132 @@
+[
+ {
+  "name": "A_old8_fast_s42",
+  "seconds": 244.9,
+  "peak_vram_mb": 15425,
+  "files": [
+   "A_old8_fast_s42_00001_.mp4"
+  ],
+  "tag": "A_old8_fast_s42",
+  "steps": 8,
+  "content": "fast",
+  "seed": 42,
+  "lora": "old8"
+ },
+ {
+  "name": "B_v4_6_fast_s42",
+  "seconds": 184.7,
+  "peak_vram_mb": 13077,
+  "files": [
+   "B_v4_6_fast_s42_00001_.mp4"
+  ],
+  "tag": "B_v4_6_fast_s42",
+  "steps": 6,
+  "content": "fast",
+  "seed": 42,
+  "lora": "v4"
+ },
+ {
+  "name": "C_v4_8_fast_s42",
+  "seconds": 236.3,
+  "peak_vram_mb": 13061,
+  "files": [
+   "C_v4_8_fast_s42_00001_.mp4"
+  ],
+  "tag": "C_v4_8_fast_s42",
+  "steps": 8,
+  "content": "fast",
+  "seed": 42,
+  "lora": "v4"
+ },
+ {
+  "name": "D_old8_slow_s42",
+  "seconds": 245.0,
+  "peak_vram_mb": 14461,
+  "files": [
+   "D_old8_slow_s42_00001_.mp4"
+  ],
+  "tag": "D_old8_slow_s42",
+  "steps": 8,
+  "content": "slow",
+  "seed": 42,
+  "lora": "old8"
+ },
+ {
+  "name": "E_v4_6_slow_s42",
+  "seconds": 184.4,
+  "peak_vram_mb": 12975,
+  "files": [
+   "E_v4_6_slow_s42_00001_.mp4"
+  ],
+  "tag": "E_v4_6_slow_s42",
+  "steps": 6,
+  "content": "slow",
+  "seed": 42,
+  "lora": "v4"
+ },
+ {
+  "name": "A_old8_fast_s1234",
+  "seconds": 245.2,
+  "peak_vram_mb": 14191,
+  "files": [
+   "A_old8_fast_s1234_00001_.mp4"
+  ],
+  "tag": "A_old8_fast_s1234",
+  "steps": 8,
+  "content": "fast",
+  "seed": 1234,
+  "lora": "old8"
+ },
+ {
+  "name": "B_v4_6_fast_s1234",
+  "seconds": 184.6,
+  "peak_vram_mb": 12975,
+  "files": [
+   "B_v4_6_fast_s1234_00001_.mp4"
+  ],
+  "tag": "B_v4_6_fast_s1234",
+  "steps": 6,
+  "content": "fast",
+  "seed": 1234,
+  "lora": "v4"
+ },
+ {
+  "name": "C_v4_8_fast_s1234",
+  "seconds": 238.9,
+  "peak_vram_mb": 12975,
+  "files": [
+   "C_v4_8_fast_s1234_00001_.mp4"
+  ],
+  "tag": "C_v4_8_fast_s1234",
+  "steps": 8,
+  "content": "fast",
+  "seed": 1234,
+  "lora": "v4"
+ },
+ {
+  "name": "D_old8_slow_s1234",
+  "seconds": 245.1,
+  "peak_vram_mb": 13935,
+  "files": [
+   "D_old8_slow_s1234_00001_.mp4"
+  ],
+  "tag": "D_old8_slow_s1234",
+  "steps": 8,
+  "content": "slow",
+  "seed": 1234,
+  "lora": "old8"
+ },
+ {
+  "name": "E_v4_6_slow_s1234",
+  "seconds": 184.5,
+  "peak_vram_mb": 12975,
+  "files": [
+   "E_v4_6_slow_s1234_00001_.mp4"
+  ],
+  "tag": "E_v4_6_slow_s1234",
+  "steps": 6,
+  "content": "slow",
+  "seed": 1234,
+  "lora": "v4"
+ }
+]
