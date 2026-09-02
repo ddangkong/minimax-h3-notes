@@ -1,0 +1,236 @@
+[
+ {
+  "name": "A_old8_fast_s7",
+  "seconds": 248.4,
+  "peak_vram_mb": 14770,
+  "files": [
+   "A_old8_fast_s7_00001_.mp4"
+  ],
+  "tag": "A_old8_fast_s7",
+  "steps": 8,
+  "content": "fast",
+  "seed": 7,
+  "lora": "old8"
+ },
+ {
+  "name": "B_v4_6_fast_s7",
+  "seconds": 184.9,
+  "peak_vram_mb": 13091,
+  "files": [
+   "B_v4_6_fast_s7_00001_.mp4"
+  ],
+  "tag": "B_v4_6_fast_s7",
+  "steps": 6,
+  "content": "fast",
+  "seed": 7,
+  "lora": "v4"
+ },
+ {
+  "name": "C_v4_8_fast_s7",
+  "seconds": 236.7,
+  "peak_vram_mb": 13018,
+  "files": [
+   "C_v4_8_fast_s7_00001_.mp4"
+  ],
+  "tag": "C_v4_8_fast_s7",
+  "steps": 8,
+  "content": "fast",
+  "seed": 7,
+  "lora": "v4"
+ },
+ {
+  "name": "A_old8_fast_s99",
+  "seconds": 242.1,
+  "peak_vram_mb": 13084,
+  "files": [
+   "A_old8_fast_s99_00001_.mp4"
+  ],
+  "tag": "A_old8_fast_s99",
+  "steps": 8,
+  "content": "fast",
+  "seed": 99,
+  "lora": "old8"
+ },
+ {
+  "name": "B_v4_6_fast_s99",
+  "seconds": 185.0,
+  "peak_vram_mb": 13020,
+  "files": [
+   "B_v4_6_fast_s99_00001_.mp4"
+  ],
+  "tag": "B_v4_6_fast_s99",
+  "steps": 6,
+  "content": "fast",
+  "seed": 99,
+  "lora": "v4"
+ },
+ {
+  "name": "C_v4_8_fast_s99",
+  "seconds": 236.3,
+  "peak_vram_mb": 13020,
+  "files": [
+   "C_v4_8_fast_s99_00001_.mp4"
+  ],
+  "tag": "C_v4_8_fast_s99",
+  "steps": 8,
+  "content": "fast",
+  "seed": 99,
+  "lora": "v4"
+ },
+ {
+  "name": "A_old8_fast_s555",
+  "seconds": 241.8,
+  "peak_vram_mb": 13084,
+  "files": [
+   "A_old8_fast_s555_00001_.mp4"
+  ],
+  "tag": "A_old8_fast_s555",
+  "steps": 8,
+  "content": "fast",
+  "seed": 555,
+  "lora": "old8"
+ },
+ {
+  "name": "B_v4_6_fast_s555",
+  "seconds": 187.6,
+  "peak_vram_mb": 13020,
+  "files": [
+   "B_v4_6_fast_s555_00001_.mp4"
+  ],
+  "tag": "B_v4_6_fast_s555",
+  "steps": 6,
+  "content": "fast",
+  "seed": 555,
+  "lora": "v4"
+ },
+ {
+  "name": "C_v4_8_fast_s555",
+  "seconds": 236.5,
+  "peak_vram_mb": 13020,
+  "files": [
+   "C_v4_8_fast_s555_00001_.mp4"
+  ],
+  "tag": "C_v4_8_fast_s555",
+  "steps": 8,
+  "content": "fast",
+  "seed": 555,
+  "lora": "v4"
+ },
+ {
+  "name": "A_old8_fast_s2024",
+  "seconds": 242.4,
+  "peak_vram_mb": 13052,
+  "files": [
+   "A_old8_fast_s2024_00001_.mp4"
+  ],
+  "tag": "A_old8_fast_s2024",
+  "steps": 8,
+  "content": "fast",
+  "seed": 2024,
+  "lora": "old8"
+ },
+ {
+  "name": "B_v4_6_fast_s2024",
+  "seconds": 187.5,
+  "peak_vram_mb": 12981,
+  "files": [
+   "B_v4_6_fast_s2024_00001_.mp4"
+  ],
+  "tag": "B_v4_6_fast_s2024",
+  "steps": 6,
+  "content": "fast",
+  "seed": 2024,
+  "lora": "v4"
+ },
+ {
+  "name": "C_v4_8_fast_s2024",
+  "seconds": 236.5,
+  "peak_vram_mb": 13013,
+  "files": [
+   "C_v4_8_fast_s2024_00001_.mp4"
+  ],
+  "tag": "C_v4_8_fast_s2024",
+  "steps": 8,
+  "content": "fast",
+  "seed": 2024,
+  "lora": "v4"
+ },
+ {
+  "name": "A_old8_fast_s31337",
+  "seconds": 242.3,
+  "peak_vram_mb": 13066,
+  "files": [
+   "A_old8_fast_s31337_00001_.mp4"
+  ],
+  "tag": "A_old8_fast_s31337",
+  "steps": 8,
+  "content": "fast",
+  "seed": 31337,
+  "lora": "old8"
+ },
+ {
+  "name": "B_v4_6_fast_s31337",
+  "seconds": 187.4,
+  "peak_vram_mb": 12970,
+  "files": [
+   "B_v4_6_fast_s31337_00001_.mp4"
+  ],
+  "tag": "B_v4_6_fast_s31337",
+  "steps": 6,
+  "content": "fast",
+  "seed": 31337,
+  "lora": "v4"
+ },
+ {
+  "name": "C_v4_8_fast_s31337",
+  "seconds": 236.3,
+  "peak_vram_mb": 13002,
+  "files": [
+   "C_v4_8_fast_s31337_00001_.mp4"
+  ],
+  "tag": "C_v4_8_fast_s31337",
+  "steps": 8,
+  "content": "fast",
+  "seed": 31337,
+  "lora": "v4"
+ },
+ {
+  "name": "A_old8_fast_s8888",
+  "seconds": 241.8,
+  "peak_vram_mb": 13066,
+  "files": [
+   "A_old8_fast_s8888_00001_.mp4"
+  ],
+  "tag": "A_old8_fast_s8888",
+  "steps": 8,
+  "content": "fast",
+  "seed": 8888,
+  "lora": "old8"
+ },
+ {
+  "name": "B_v4_6_fast_s8888",
+  "seconds": 187.5,
+  "peak_vram_mb": 12970,
+  "files": [
+   "B_v4_6_fast_s8888_00001_.mp4"
+  ],
+  "tag": "B_v4_6_fast_s8888",
+  "steps": 6,
+  "content": "fast",
+  "seed": 8888,
+  "lora": "v4"
+ },
+ {
+  "name": "C_v4_8_fast_s8888",
+  "seconds": 236.4,
+  "peak_vram_mb": 13002,
+  "files": [
+   "C_v4_8_fast_s8888_00001_.mp4"
+  ],
+  "tag": "C_v4_8_fast_s8888",
+  "steps": 8,
+  "content": "fast",
+  "seed": 8888,
+  "lora": "v4"
+ }
+]

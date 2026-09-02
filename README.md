@@ -243,9 +243,29 @@ content types × three configurations × two seeds, the finding evaporated:
 
 ![slow content, all four cells clean](images/h3-lora-slow.jpg)
 
-**The author's guidance holds; the counter-example was seed luck.** The failure is real but
-occasional, disappears at 8 steps, and never appeared on slow content. v4 at 8 steps was clean in
-every cell and *faster* than the older 8-step LoRA (237s vs 245s). Use v4 at 8 steps.
+That was n=2, and it was also wrong. Six more seeds per cell — 24 fast-motion generations,
+scored blind against a criterion fixed in advance, key opened only after scoring:
+
+![five of the failures, revealed after scoring](images/h3-lora-n8.jpg)
+
+| Configuration | Hands failed | Rate | Time |
+|---|---|---|---|
+| old 8-step @ 8 | **0 of 8** | 0% | 245s |
+| v4 @ 6 | **4 of 8** | **50%** | 186s |
+| v4 @ 8 | **1 of 8** | 12.5% | 237s |
+
+So the failure is not occasional — at 6 steps it is a coin flip — and 8 steps reduces it rather
+than removing it. **Both earlier conclusions were wrong, in opposite directions.** n=1 saw a real
+effect and could not size it; n=2 mistook 0-of-2 for reliability, when a 12.5% failure rate
+produces a clean pair about 77% of the time.
+
+The blinding mattered. I expected v4 at 8 steps to score clean — that was my position going in —
+and it scored one failure. Judging against a written criterion with the labels hidden is what let
+that through.
+
+**Recommendation with rates attached:** if hands carry your action in fast motion, the older
+8-step LoRA is the safe choice at 0 of 8. v4 at 8 steps is usually fine and ~3% faster. v4 at 6
+steps is a coin flip and 24% faster — fine for iteration, not for a final render.
 
 ### Why the sharpness metric was useless here
 
