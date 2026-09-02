@@ -1,0 +1,42 @@
+{
+ "P1": {
+  "left": "v4_8",
+  "right": "old8",
+  "seed": 1234
+ },
+ "P2": {
+  "left": "v4_8",
+  "right": "old8",
+  "seed": 7
+ },
+ "P3": {
+  "left": "old8",
+  "right": "v4_8",
+  "seed": 555
+ },
+ "P4": {
+  "left": "v4_8",
+  "right": "old8",
+  "seed": 8888
+ },
+ "P5": {
+  "left": "old8",
+  "right": "v4_8",
+  "seed": 99
+ },
+ "P6": {
+  "left": "v4_8",
+  "right": "old8",
+  "seed": 42
+ },
+ "P7": {
+  "left": "v4_8",
+  "right": "old8",
+  "seed": 2024
+ },
+ "P8": {
+  "left": "v4_8",
+  "right": "old8",
+  "seed": 31337
+ }
+}

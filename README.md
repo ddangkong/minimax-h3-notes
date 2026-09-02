@@ -263,9 +263,28 @@ The blinding mattered. I expected v4 at 8 steps to score clean — that was my p
 and it scored one failure. Judging against a written criterion with the labels hidden is what let
 that through.
 
-**Recommendation with rates attached:** if hands carry your action in fast motion, the older
-8-step LoRA is the safe choice at 0 of 8. v4 at 8 steps is usually fine and ~3% faster. v4 at 6
-steps is a coin flip and 24% faster — fine for iteration, not for a final render.
+### The hands were only half of it
+
+Watching the clips back rather than reading tables, the older LoRA simply looks better -
+background texture, line definition, material surfaces - regardless of the hands. Separate claim,
+so separate blind test: same seed both sides, left/right randomised, no labels, question fixed in
+advance (which side retains more detail, ignoring hands).
+
+![three of the eight pairs, revealed after judging](images/h3-quality-ab.jpg)
+
+**The older 8-step LoRA won 7 of 8 pairs.**
+
+Two independent blind passes over the same 24 generations, both pointing the same way: zero hand
+failures against one, and 7-1 on detail.
+
+**Recommendation:** for fast motion use the older 8-step LoRA - 0 of 8 on hands, 7 of 8 on
+detail, at 245s against 237s. v4 at 6 steps is 24% faster and fine for iteration passes where you
+are checking composition, but it is a coin flip on hands and loses texture. On slow or static
+content neither failed, which is the case the author recommends v4 for.
+
+One limitation worth stating: the hand scoring used a single frame per clip at t=2.0s. This is a
+motion artifact, so a per-clip multi-frame pass (`scripts/blind_prep_multi.py`) may find more
+failures than reported here. It has not been run.
 
 ### Why the sharpness metric was useless here
 
