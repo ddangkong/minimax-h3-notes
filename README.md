@@ -18,6 +18,10 @@ RTX 5080 16GB · 31GB system RAM · ComfyUI 0.33.1 · torch 2.12.0+cu130 · Wind
 | | |
 |---|---|
 | [The silent `ref_images` failure](#the-silent-ref_images-failure) | A wrong input shape is ignored with no error, and the output still looks fine |
+| [Anchoring a clip to a still](#anchoring-a-clip-to-a-still) | The node with no image input, and how to prove the anchor took |
+| [Camera speed costs more detail than step count](#camera-speed-costs-more-detail-than-step-count) | Four cells: slow camera doubled end-of-clip sharpness, 16 steps made it worse |
+| [Prompts that ask for a count get clones](#prompts-that-ask-for-a-count-get-clones) | Counting language tiles the frame; variety has to be stated |
+| [Describe the destination, not just the move](#describe-the-destination-not-just-the-move) | A camera move that ends somewhere new loses the look on arrival |
 | [Character consistency across cuts](#character-consistency-across-cuts) | Three-view chroma-key sheets, scene-only prompts |
 | [What the card actually does](#what-the-card-actually-does) | Frame ceiling, VRAM, resolution, timings |
 | [The v4 LoRA that did not replicate](#the-v4-lora-a-single-seed-result-that-did-not-replicate) | A single-seed result reversed at n=2 |
@@ -77,6 +81,156 @@ of the prompt entirely:
 If A and B look the same, references are being ignored no matter what the code appears to say.
 Secondary signal: reference processing adds roughly a minute per cut, so a suspiciously fast run
 is a hint. See [`scripts/ref_ablation.py`](scripts/ref_ablation.py).
+
+---
+
+## Anchoring a clip to a still
+
+Same failure family as `ref_images`, different node. To start a clip from a specific image you
+want `MiniMaxH3ImageToVideo`, which takes `first_frame` and emits **both** the positive
+conditioning and the AV latent:
+
+```python
+"20": {"class_type": "MiniMaxH3ImageToVideo",
+       "inputs": {"clip": [...], "vae": [...], "prompt": prompt,
+                  "width": W, "height": H, "length": frames,
+                  "first_frame": ["40", 0]}},          # LoadImage
+# the latent comes out of output 1 of the same node
+"14": {"class_type": "SamplerCustomAdvanced",
+       "inputs": {..., "latent_image": ["20", 1]}},
+```
+
+The mistake was reaching for `EmptyMiniMaxH3LatentAV` plus a `CLIPTextEncode`. That node has no
+image input at all, so the still never enters the graph. Nothing errors — you get a perfectly
+good clip generated from the text, which resembles the still because the same prompt wrote both.
+
+### Verify with pixels, not with the graph
+
+Reading the graph is what produced the bug in the first place. Extract frame 0 and difference it
+against the source still:
+
+| | mean abs difference | pixels within 20 |
+|---|---|---|
+| Anchored | 6.5 – 11.3 | 82 – 93% |
+| Not anchored | 49 – 69 | 10 – 28% |
+
+The two regimes are far enough apart that no judgement call is involved.
+
+**And check the file you are measuring is the one you just made.** A "skip if the output already
+exists" guard silently kept results from the previous, broken configuration, so the verification
+ran against stale files and reported failure after the bug was fixed. If a harness skips work,
+have it record *what* produced the file — prompt, first frame, frame count — and skip only when
+that still matches.
+
+---
+
+## Camera speed costs more detail than step count
+
+The still handed in as `first_frame` is sharp, the first second holds, and from around the
+midpoint trunks smear and undergrowth turns to mush. Four cells, one variable each, same prompt
+and seed:
+
+| | steps | sigma shift node | camera | sharpness mid | sharpness end | time |
+|---|---|---|---|---|---|---|
+| A baseline | 8 | — | fast | 177.6 | 152.4 | 250s |
+| B shift 12 | 8 | 12.0 | fast | 177.6 | 152.4 | 246s |
+| C 16 steps | 16 | 12.0 | fast | 186.3 | 126.3 | 456s |
+| **D slow camera** | 8 | 12.0 | **slow** | **282.1** | **324.3** | 248s |
+
+**B is identical to A to four significant figures.** `MiniMaxH3SigmaShift` defaults to
+`shift_video=12.0`, which is already what the model uses — adding the node changes nothing. It
+was worth testing precisely because I was sure it was the cause.
+
+**C is worse at the end than the baseline**, at 1.8× the cost. Consistent with the face result
+above: more steps refine what the representation can hold, they do not enlarge it.
+
+**D more than doubles end-of-clip sharpness at the same cost.** The only change was wording:
+
+```
+before:  flies fast and continuously forward, the nearest trunks rushing toward
+         the lens and streaming past both edges. Constant rapid forward motion
+after:   drifts forward slowly and steadily, the nearest trunks easing past the
+         edges of frame. Slow deliberate forward motion
+```
+
+The distilled 8-step model has a fixed budget per frame. Large per-frame displacement spends it
+on motion and there is nothing left for texture. Note the gap *widens* over the clip — 59% at the
+midpoint, 113% at the end — so a single early frame will not show you this.
+
+To keep the sense of travel without the smear, slow the camera and lengthen the clip instead:
+124 frames → 226 covers similar ground at half the per-frame displacement, and time scales
+linearly with frames.
+
+Since H3 generates audio jointly, the audio line is worth slowing too — `rushing air` became
+`soft moving air`. Not separately ablated.
+
+Data: [`results/camera_speed.json`](results/camera_speed.json). Reproduce with
+[`scripts/camera_speed.py`](scripts/camera_speed.py) then
+[`scripts/measure_sharpness.py`](scripts/measure_sharpness.py).
+
+---
+
+## Prompts that ask for a count get clones
+
+A forest that reads as a repeating game asset — the same tree stamped across the frame — traces
+back to the prompt asking for a number and never asking for difference:
+
+```
+hundreds of trees receding to the horizon, all overlapping
+packed completely full with no empty space
+looking straight ahead into the direction of travel
+```
+
+Cloning is the cheapest way to satisfy a count, filling every gap is easiest by repetition, and a
+dead-centre vanishing point makes the frame near-mirror-symmetric. Nothing in the negative
+prohibited any of it.
+
+Replacing the counting language with explicit variety — mixed species, trunk thicknesses from
+sapling to giant, individual lean angles, broken and dead trunks, irregular spacing with real
+gaps, vanishing point pushed off to one side — plus a negative covering `repeating pattern,
+tiling, cloned, duplicated, wallpaper, symmetrical, mirrored, evenly spaced, rows, plantation`:
+
+| | mean symmetry (n=8) |
+|---|---|
+| Before | 62.6 |
+| After | **43.5** |
+
+*(100 − mean absolute difference between a frame and its own mirror; higher is more symmetric.)*
+
+**It split rather than improving everything.** The three cuts that fell below 16 all had a
+structurally asymmetric subject — a slope, a ridgeline, a hillside. The five that stayed above 57
+were all variations on *standing inside a wood looking forward*, where trunks get distributed
+evenly left and right regardless of what the text asks.
+
+Text suppressed repetition of individual elements. It did not fix global symmetry in a frontal
+composition; choosing a subject that is asymmetric by construction did.
+
+Data: [`results/repetition_symmetry.json`](results/repetition_symmetry.json).
+
+---
+
+## Describe the destination, not just the move
+
+A camera move that ends somewhere new — descending through cloud to reveal the sea below — kept
+the look for the first half and then went flat and grey on arrival.
+
+The prompt was eight lines of cloud and one line of sea (`the sea rushing up toward the viewer,
+its surface glittering under the sun`). Conditioning from the first frame governs the opening;
+by the end the text is doing the work, and for the destination there was almost no text.
+
+Writing the destination at the same length as the origin — what is on the ground, how light
+arrives there, what floats in the air, and an explicit *the colour stays as deep and saturated at
+the bottom as it was at the top* — on an equivalent set of descents:
+
+| Cut | saturation, first frame → last | retained |
+|---|---|---|
+| canopy | 31.7 → 43.2 | 136% |
+| mist | 23.9 → 40.2 | 168% |
+| gorge | 39.9 → 46.9 | 118% |
+
+Above 100% because these start backlit and blown out and descend into colour, so this shows the
+failure is gone rather than sizing the fix. Confounded with a subject change (sea → forest floor)
+and not separately ablated.
 
 ---
 
@@ -356,6 +510,8 @@ Paths are hardcoded for the author's machine. Change the constants at the top of
 | [`measure_metrics.py`](scripts/measure_metrics.py) | Sharpness / saturation with the definitions above |
 | [`lora_n.py`](scripts/lora_n.py) | Raising n on the LoRA question — 2 content types × 2 seeds × steps |
 | [`ref_ablation.py`](scripts/ref_ablation.py) | Confirms references are actually being applied |
+| [`camera_speed.py`](scripts/camera_speed.py) | Four cells isolating steps / sigma shift / camera speed |
+| [`measure_sharpness.py`](scripts/measure_sharpness.py) | Sharpness, symmetry and saturation at the clip midpoint and end |
 | [`flux_charsheet_green.py`](scripts/flux_charsheet_green.py) | Three-view chroma-key character sheets |
 | [`make_two.py`](scripts/make_two.py) | End-to-end: two characters, three cuts each |
 
@@ -378,6 +534,9 @@ did not transfer:
   which is not reassuring about the rest. Treat any single-seed number here as provisional.
 - **Sharpness is a blunt instrument.** It does not capture "the hands became featureless
   blobs", which was the deciding factor in one comparison. Look at the frames.
+- **The camera-speed and symmetry sections are n=1 per cell on one scene.** The effect sizes
+  there were large enough to see without the metric, which is the only reason they are stated at
+  all; the magnitudes are not to be trusted at the quoted precision.
 - Scripts assume Windows paths and a local ComfyUI at `127.0.0.1:8188`.
 
 Corrections welcome — particularly from anyone whose numbers disagree, since that is the

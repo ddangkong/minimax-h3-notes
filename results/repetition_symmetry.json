@@ -1,0 +1,31 @@
+{
+  "question": "Why does a generated forest read as a game asset rather than a place?",
+  "cause": "The prompt asked for a count and never asked for variety. Cloning is the cheapest way to satisfy a count.",
+  "prompt_changes": {
+    "removed": [
+      "hundreds of trees receding to the horizon, all overlapping",
+      "packed completely full with no empty space",
+      "looking straight ahead into the direction of travel"
+    ],
+    "added_positive": "Every tree is a different individual: different species mixed together, wildly different trunk thicknesses from saplings to giants, different ages, each one leaning at its own angle, none vertical and parallel to another. Irregular haphazard natural spacing with real gaps and clumps, never evenly spaced or in rows. Broken snapped trunks, dead standing trees, fallen logs at odd angles. Asymmetric composition, the vanishing point well off to one side rather than centred.",
+    "added_negative": "repeating pattern, tiling, tiled, repeated elements, identical objects, cloned, copy pasted, duplicated, seamless pattern, wallpaper, symmetrical, mirrored, bilateral symmetry, kaleidoscope, evenly spaced, regular grid, rows, uniform, orderly, plantation, centred vanishing point, centred composition"
+  },
+  "metric": "100 - mean absolute difference between the frame and its own mirror. Higher is more mirror-symmetric.",
+  "results": {
+    "before_mean": 62.6,
+    "after_mean": 43.5,
+    "n_per_set": 8,
+    "per_cut_after": {
+      "autumn": 7.6,
+      "birch": 12.4,
+      "ridge": 15.3,
+      "stream": 57.2,
+      "giants": 57.9,
+      "shaft": 63.1,
+      "rainforest": 68.7,
+      "night": 73.9
+    }
+  },
+  "conclusion": "Roughly a 30% reduction on average, but it split cleanly rather than improving everything. The three cuts that dropped below 16 all had a structurally asymmetric subject: a slope, a ridgeline, a hillside. The five that stayed above 57 were all variations on standing inside a wood looking forward, where the model distributes trunks evenly to left and right no matter what the text asks for.",
+  "practical": "Text can suppress repetition of individual elements. It did not fix global left/right symmetry in a frontal composition. Choosing a subject that is asymmetric by construction worked where the wording did not."
+}

@@ -1,0 +1,64 @@
+{
+  "question": "Why does an 8-step turbo generation lose detail partway through a clip when the first frame handed in is sharp?",
+  "setup": {
+    "resolution": "1536x640",
+    "frames": 124,
+    "fps": 24,
+    "dit": "minimax_h3_fl2va_pruned_int8_convrot",
+    "lora": "minimax_h3_fl2v_turbo_8step_v1.0",
+    "sampler": "res_multistep",
+    "scheduler": "simple",
+    "cfg": 1.0,
+    "seed": 4243,
+    "first_frame": "Flux Krea still, forest interior",
+    "note": "one variable changed per cell, same prompt and seed throughout, n=1"
+  },
+  "metric": "Laplacian variance at native resolution on the whole frame, sampled at the midpoint (frame 62) and the last frame (123)",
+  "cells": [
+    {
+      "name": "A_baseline",
+      "steps": 8,
+      "sigma_shift_node": false,
+      "camera": "fast forward",
+      "sharpness_mid": 177.6,
+      "sharpness_end": 152.4,
+      "seconds": 250,
+      "delta_vs_baseline": "reference"
+    },
+    {
+      "name": "B_shift12",
+      "steps": 8,
+      "sigma_shift_node": true,
+      "shift_video": 12.0,
+      "camera": "fast forward",
+      "sharpness_mid": 177.6,
+      "sharpness_end": 152.4,
+      "seconds": 246,
+      "delta_vs_baseline": "identical to four significant figures; the node's default shift_video of 12.0 is already what the model uses, so adding it changes nothing"
+    },
+    {
+      "name": "C_16step",
+      "steps": 16,
+      "sigma_shift_node": true,
+      "shift_video": 12.0,
+      "camera": "fast forward",
+      "sharpness_mid": 186.3,
+      "sharpness_end": 126.3,
+      "seconds": 456,
+      "delta_vs_baseline": "mid +4.9%, end -17.2%, at 1.8x the time"
+    },
+    {
+      "name": "D_slowcam",
+      "steps": 8,
+      "sigma_shift_node": true,
+      "shift_video": 12.0,
+      "camera": "slow forward",
+      "sharpness_mid": 282.1,
+      "sharpness_end": 324.3,
+      "seconds": 248,
+      "delta_vs_baseline": "mid +58.8%, end +112.8%, at the same cost"
+    }
+  ],
+  "conclusion": "Per-frame displacement, not step count and not the sigma shift, is what costs detail here. Removing the words fast / rushing / tearing past / rapid from the camera instruction more than doubled end-of-clip sharpness at identical cost.",
+  "limitations": "n=1 per cell, one scene, one seed. The LoRA section of this repo is a worked example of an n=1 result reversing, so treat the magnitudes as provisional; the ordering was large enough to be visible without the metric."
+}
