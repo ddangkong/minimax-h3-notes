@@ -68,6 +68,22 @@ Three reasons this is hard to catch:
 **When a node's API is ambiguous, read the official working workflow before reading the source.**
 The source tells you what the function accepts. The workflow tells you what the engine sends.
 
+### Not a novel finding
+
+[ComfyUI issue #15667](https://github.com/Comfy-Org/ComfyUI/issues/15667) (16 Aug 2026) hit the
+identical wall three weeks earlier, filed it as a bug, then diagnosed and closed it — same flat
+dotted key, found in the same place. I rediscovered this independently and only found the issue
+afterwards.
+
+Their demonstration is better than mine and worth stealing. Instead of judging frames by eye they
+fixed the seed and compared MD5 of the decoded audio across four runs — nested key and
+*references removed entirely* produced **bit-identical** output, the dotted key did not. That is
+proof the input never arrived, not a hint that conditioning is weak. Run that if you want
+certainty.
+
+Their closing note is the right fix: an unknown key in a node’s inputs is dropped silently, and
+a warning naming the ignored key would have saved both investigations.
+
 ### Proving the references are actually doing something
 
 A working run and a broken run look similar, so remove the confound — empty the appearance out
